@@ -1,0 +1,52 @@
+<article class="product-card">
+  <div class="product-card__image-wrap">
+    <img
+      class="product-card__image"
+      [src]="imagePath"
+      [alt]="product.name"
+    />
+    @if (product.is_new) {
+      <span class="product-card__tag product-card__tag--new">New</span>
+    }
+    <button type="button" class="product-card__add" (click)="addToCart()">
+      Add to Cart
+    </button>
+  </div>
+
+  <h3 class="product-card__name">{{ product.name }}</h3>
+
+  <div class="product-card__rating">
+    <div class="product-card__stars" aria-hidden="true">
+      @for (star of fullStars; track star) {
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 1.5L11.02 6.26L16.2 6.87L12.36 10.39L13.4 15.5L9 12.97L4.6 15.5L5.64 10.39L1.8 6.87L6.98 6.26L9 1.5Z" fill="#FFC633"/>
+        </svg>
+      }
+      @if (hasHalfStar) {
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <defs>
+            <linearGradient [attr.id]="halfStarGradientId">
+              <stop offset="50%" stop-color="#FFC633"/>
+              <stop offset="50%" stop-color="#F0F0F0"/>
+            </linearGradient>
+          </defs>
+          <path d="M9 1.5L11.02 6.26L16.2 6.87L12.36 10.39L13.4 15.5L9 12.97L4.6 15.5L5.64 10.39L1.8 6.87L6.98 6.26L9 1.5Z" [attr.fill]="'url(#' + halfStarGradientId + ')'"/>
+        </svg>
+      }
+      @for (star of emptyStars; track star) {
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <path d="M9 1.5L11.02 6.26L16.2 6.87L12.36 10.39L13.4 15.5L9 12.97L4.6 15.5L5.64 10.39L1.8 6.87L6.98 6.26L9 1.5Z" fill="#F0F0F0"/>
+        </svg>
+      }
+    </div>
+    <span class="product-card__rating-text">{{ ratingLabel }}</span>
+  </div>
+
+  <div class="product-card__price-row">
+    <span class="product-card__price">{{ product.price }}</span>
+    @if (product.is_discounted && product.original_price) {
+      <span class="product-card__original">{{ product.original_price }}</span>
+      <span class="product-card__discount">-{{ product.discount_percentage }}</span>
+    }
+  </div>
+</article>

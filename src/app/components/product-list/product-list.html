@@ -1,0 +1,7 @@
+<section class="product-list">
+  <div class="product-list__grid">
+    @for (product of products; track product.id) {
+      <app-product-card [product]="product" />
+    }
+  </div>
+</section>

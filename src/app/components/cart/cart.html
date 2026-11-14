@@ -1,0 +1,87 @@
+<section class="cart">
+  <div class="cart__panel">
+    <div class="cart__items">
+      @if (cartService.items().length === 0) {
+        <p class="cart__empty">Your cart is empty. Add products from the list below.</p>
+      } @else {
+        @for (item of cartService.items(); track item.product.id; let last = $last) {
+          <div class="cart-item" [class.cart-item--last]="last">
+            <img
+              class="cart-item__image"
+              [src]="getImagePath(item.product.image)"
+              [alt]="item.product.name"
+            />
+
+            <div class="cart-item__details">
+              <div class="cart-item__top">
+                <div class="cart-item__info">
+                  <h3 class="cart-item__name">{{ item.product.name }}</h3>
+                  <p class="cart-item__meta">
+                    <span>Size: <strong>{{ item.product.size }}</strong></span>
+                  </p>
+                  <p class="cart-item__meta">
+                    <span>Color: <strong>{{ item.product.color }}</strong></span>
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  class="cart-item__remove"
+                  (click)="remove(item.product.id)"
+                  aria-label="Remove item"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 6H5H21" stroke="#FF3333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M8 6V4C8 3.46957 8.21071 2.96086 8.58579 2.58579C8.96086 2.21071 9.46957 2 10 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V6M19 6V20C19 20.5304 18.7893 21.0391 18.4142 21.4142C18.0391 21.7893 17.5304 22 17 22H7C6.46957 22 5.96086 21.7893 5.58579 21.4142C5.21071 21.0391 5 20.5304 5 20V6H19Z" stroke="#FF3333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M10 11V17" stroke="#FF3333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M14 11V17" stroke="#FF3333" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
+
+              <div class="cart-item__bottom">
+                <span class="cart-item__price">{{ item.product.price }}</span>
+                <div class="cart-item__qty">
+                  <button type="button" (click)="decrease(item.product.id)" aria-label="Decrease quantity">−</button>
+                  <span>{{ item.quantity }}</span>
+                  <button type="button" (click)="increase(item.product.id)" aria-label="Increase quantity">+</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      }
+    </div>
+
+    <aside class="order-summary">
+      <h2 class="order-summary__title">Order Summary</h2>
+
+      <div class="order-summary__rows">
+        <div class="order-summary__row">
+          <span class="order-summary__label">Subtotal</span>
+          <span class="order-summary__value">{{ cartService.formatCurrency(cartService.subtotal()) }}</span>
+        </div>
+        <div class="order-summary__row">
+          <span class="order-summary__label">Discount ({{ cartService.discountPercentLabel() }})</span>
+          <span class="order-summary__value order-summary__value--discount">
+            -{{ cartService.formatCurrency(cartService.discount()) }}
+          </span>
+        </div>
+        <div class="order-summary__row">
+          <span class="order-summary__label">Delivery Fee</span>
+          <span class="order-summary__value">{{ cartService.formatCurrency(cartService.delivery()) }}</span>
+        </div>
+      </div>
+
+      <div class="order-summary__total">
+        <span>Total</span>
+        <strong>{{ cartService.formatCurrency(cartService.total()) }}</strong>
+      </div>
+
+      <button type="button" class="order-summary__checkout">
+        Go to Checkout
+        <span aria-hidden="true">→</span>
+      </button>
+    </aside>
+  </div>
+</section>
