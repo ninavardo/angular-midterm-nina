@@ -1,127 +1,23 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Product } from '../models/product.model';
+
+interface ProductsResponse {
+  products: Product[];
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductManagementService {
-  private readonly products: Product[] = [
-    {
-      id: '1',
-      image: 'image1',
-      name: 'Gradient Graphic T-shirt',
-      price: '$145',
-      is_new: true,
-      is_discounted: false,
-      discount_percentage: null,
-      rating: 3.5,
-      size: 'Large',
-      color: 'White',
-    },
-    {
-      id: '2',
-      image: 'image2',
-      name: 'Polo with Tipping Details',
-      price: '$180',
-      is_new: true,
-      is_discounted: false,
-      discount_percentage: null,
-      rating: 4.5,
-      size: 'Medium',
-      color: 'Red',
-    },
-    {
-      id: '3',
-      image: 'image3',
-      name: 'Black Striped T-shirt',
-      price: '$120',
-      original_price: '$160',
-      is_new: false,
-      is_discounted: true,
-      discount_percentage: '30%',
-      rating: 5.0,
-      size: 'Large',
-      color: 'Black',
-    },
-    {
-      id: '4',
-      image: 'image4',
-      name: 'Skinny Fit Jeans',
-      price: '$240',
-      original_price: '$260',
-      is_new: false,
-      is_discounted: true,
-      discount_percentage: '20%',
-      rating: 3.5,
-      size: 'Large',
-      color: 'Blue',
-    },
-    {
-      id: '5',
-      image: 'image5',
-      name: 'Checkered Shirt',
-      price: '$180',
-      is_new: true,
-      is_discounted: false,
-      discount_percentage: null,
-      rating: 4.5,
-      size: 'Medium',
-      color: 'Red',
-    },
-    {
-      id: '6',
-      image: 'image6',
-      name: 'Sleeve Striped T-shirt',
-      price: '$130',
-      original_price: '$160',
-      is_new: false,
-      is_discounted: true,
-      discount_percentage: '30%',
-      rating: 4.5,
-      size: 'Large',
-      color: 'Orange',
-    },
-    {
-      id: '7',
-      image: 'image7',
-      name: 'Vertical Striped Shirt',
-      price: '$212',
-      original_price: '$232',
-      is_new: false,
-      is_discounted: true,
-      discount_percentage: '20%',
-      rating: 5.0,
-      size: 'Large',
-      color: 'Green',
-    },
-    {
-      id: '8',
-      image: 'image8',
-      name: 'Courage Graphic T-shirt',
-      price: '$67.000.000',
-      is_new: true,
-      is_discounted: false,
-      discount_percentage: null,
-      rating: 4.0,
-      size: 'Large',
-      color: 'Orange',
-    },
-    {
-      id: '9',
-      image: 'image9',
-      name: 'Loose Fit Bermuda Shorts',
-      price: '$80',
-      is_new: false,
-      is_discounted: false,
-      discount_percentage: null,
-      rating: 3.0,
-      size: 'Large',
-      color: 'Blue',
-    },
-  ];
+  private readonly http = inject(HttpClient);
+  private readonly productsUrl = 'assets/data/products.json';
 
-  getProducts(): Product[] {
-    return this.products;
+  getProducts(): Observable<Product[]> {
+    return this.http
+      .get<ProductsResponse>(this.productsUrl)
+      .pipe(map((response) => response.products));
   }
 
   getProductImagePath(imageKey: string): string {
