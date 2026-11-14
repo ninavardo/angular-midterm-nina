@@ -10,6 +10,7 @@
   padding: 0 40px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 48px;
 }
 
@@ -50,11 +51,13 @@
     padding: 0 20px;
     gap: 20px;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .header__nav {
     gap: 16px;
     flex-wrap: wrap;
+    justify-content: center;
   }
 
   .header__logo {
